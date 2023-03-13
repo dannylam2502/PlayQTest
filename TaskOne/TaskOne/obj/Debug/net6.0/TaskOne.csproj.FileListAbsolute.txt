@@ -1,0 +1,15 @@
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\bin\Debug\net6.0\TaskOne.exe
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\bin\Debug\net6.0\TaskOne.deps.json
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\bin\Debug\net6.0\TaskOne.runtimeconfig.json
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\bin\Debug\net6.0\TaskOne.dll
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\bin\Debug\net6.0\TaskOne.pdb
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\TaskOne.csproj.AssemblyReference.cache
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\TaskOne.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\TaskOne.AssemblyInfoInputs.cache
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\TaskOne.AssemblyInfo.cs
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\TaskOne.csproj.CoreCompileInputs.cache
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\TaskOne.dll
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\refint\TaskOne.dll
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\TaskOne.pdb
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\TaskOne.genruntimeconfig.cache
+D:\Work\Tests\PlayQ\TaskOne\TaskOne\obj\Debug\net6.0\ref\TaskOne.dll
