@@ -75,9 +75,9 @@ public class ContainerEditor : EditorWindow
     private Vector2 scrollPosition; // the current scrollPosition
     private Vector2 oldScrollPosition; // the last frame scrollPosition, use this to detect scroll up or down activity
 
-    private LinkedList<Tuple<int, bool>> cacheData;
-    private int totalCount;
-    private int counter;
+    private LinkedList<Tuple<int, bool>> cacheData; // the current data set to display, use linkedlist since it's fit
+    private int totalCount; // number of elements in the container
+    private int counter; // track the position of the "current" node in container
 
     [MenuItem("TaskTwo/Container Window")]
     public static void ShowWindow()
@@ -92,9 +92,9 @@ public class ContainerEditor : EditorWindow
         counter = 0;
         container = new Container(totalCount);
         cacheData = new LinkedList<Tuple<int, bool>>();
-        minSize = new Vector2(300, 400);
+        minSize = new Vector2(300, 400); // set window minimum size, we need some space
 
-        for (int i = 0; i < MAX_NUM && i < totalCount; i++) // display maximum MAX_NuM nodes at a time for performance
+        for (int i = 0; i < MAX_NUM && i < totalCount; i++) // display maximum MAX_NUM nodes at a time for performance
         {
             bool nodeValue = container.Value;
             cacheData.AddLast(new Tuple<int, bool>(i, nodeValue));
@@ -102,6 +102,7 @@ public class ContainerEditor : EditorWindow
         }
     }
 
+    // wrapper function, when we move the container, we update the counter as well
     private void MoveForward()
     {
         counter++;
@@ -112,6 +113,7 @@ public class ContainerEditor : EditorWindow
         container.MoveForward();
     }
 
+    // wrapper function, when we move the container, we update the counter as well
     private void MoveBackward()
     {
         counter--;
@@ -124,7 +126,7 @@ public class ContainerEditor : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("total = " + totalCount + " Current Node: " + counter);
+        GUILayout.Label("total = " + totalCount + " Current Node: " + counter); // debug label
         // scroll view to display the nodes
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);
         // use the position to calculate the offset for the infinite scrollview
@@ -140,14 +142,15 @@ public class ContainerEditor : EditorWindow
             oldScrollPosition = scrollPosition; // update it to follow so no update on this frame
         }
 
+        // there is a value changed
         if (oldScrollPosition != scrollPosition)
         {
-            Debug.LogFormat("Old = {0}, New = {1}", oldScrollPosition, scrollPosition);
+            //Debug.LogFormat("Old = {0}, New = {1}", oldScrollPosition, scrollPosition);
             if (oldScrollPosition.y < scrollPosition.y)
             {
                 // scroll down
-                // do 5 times
-                for (int i = 0; i < 5; i++)
+                // do 5 times, remove first and add the new element to the last pos of the list
+                for (int i = 0; i < UPDATE_STEP; i++)
                 {
                     cacheData.RemoveFirst();
                     cacheData.AddLast(new Tuple<int, bool>(counter, container.Value));
@@ -156,8 +159,8 @@ public class ContainerEditor : EditorWindow
             }
             else
             {
-                // scroll up
-                for (int i = 0; i < 5; i++)
+                // scroll up, remove last and add the new element to the first pos of the list
+                for (int i = 0; i < UPDATE_STEP; i++)
                 {
                     cacheData.RemoveLast();
                     cacheData.AddFirst(new Tuple<int, bool>(counter, container.Value));
@@ -168,12 +171,13 @@ public class ContainerEditor : EditorWindow
 
         GUILayout.Space(10);
 
+        // draw data
         foreach (var data in cacheData)
         {
             GUILayout.Toggle(data.Item2, data.Item1.ToString());
         }
 
-        oldScrollPosition = scrollPosition;
+        oldScrollPosition = scrollPosition; // update oldScrollPosition value to track scroll movement
         GUILayout.EndScrollView();
     }
 }
