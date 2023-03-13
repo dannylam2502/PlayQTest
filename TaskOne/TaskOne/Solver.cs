@@ -57,7 +57,7 @@ namespace TaskOne
             {
                 container.MoveBackward();
             }
-            // each steps is where we need to reverse the value back
+            // each step is where we need to reverse the value back
             for (int i = 0; i < flagSteps.Count - 1; i++)
             {
                 int step = flagSteps[i];

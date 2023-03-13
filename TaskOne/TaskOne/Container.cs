@@ -10,7 +10,7 @@ public class Container
         {
             var randomGen = new Random(DateTime.Now.Millisecond);
             Value = randomGen.Next(2) < 1;
-            Console.Write(" " + Value.ToString());
+            //Console.Write(" " + Value.ToString());
             Prev = prev;
         }
     }
@@ -22,7 +22,7 @@ public class Container
             var randomGen = new Random(DateTime.Now.Millisecond);
             count = randomGen.Next(1, 20); //Could be up to Int32.MaxValue, reduced for sake of test memory
         }
-        Console.WriteLine("Count = {0}", count); // for testing purpose only
+        //Console.WriteLine("Count = {0}", count); // for testing purpose only
         Node prev = null;
         for (int i = 0; i < count; i++)
         {
