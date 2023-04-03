@@ -67,13 +67,11 @@ public class Container
 
 public class ContainerEditor : EditorWindow
 {
-    public const int MAX_NUM = 100; // maximum UIs
+    public const int MAX_NUM = 50; // maximum UIs
     public const float SCROLL_OFF_SET = 50; // the offset from which we reset the scroll
-    public const int UPDATE_STEP = 5; // the update speed when scroll up/down
+    public const int UPDATE_STEP = 1; // the update speed when scroll up/down
 
     private Container container;
-    private Vector2 scrollPosition; // the current scrollPosition
-    private Vector2 oldScrollPosition; // the last frame scrollPosition, use this to detect scroll up or down activity
 
     private LinkedList<Tuple<int, bool>> cacheData; // the current data set to display, use linkedlist since it's fit
     private int totalCount; // number of elements in the container
@@ -92,7 +90,7 @@ public class ContainerEditor : EditorWindow
         counter = 0;
         container = new Container(totalCount);
         cacheData = new LinkedList<Tuple<int, bool>>();
-        minSize = new Vector2(300, 400); // set window minimum size, we need some space
+        //minSize = new Vector2(300, 200); // set window minimum size, we need some space
 
         for (int i = 0; i < MAX_NUM && i < totalCount; i++) // display maximum MAX_NUM nodes at a time for performance
         {
@@ -124,51 +122,40 @@ public class ContainerEditor : EditorWindow
         container.MoveBackward();
     }
 
+    private void Update()
+    {
+        Repaint();
+    }
+
     private void OnGUI()
     {
         GUILayout.Label("total = " + totalCount + " Current Node: " + counter); // debug label
-        // scroll view to display the nodes
-        scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-        // use the position to calculate the offset for the infinite scrollview
-        // if we reach a certain threshold, reset its position
-        if (scrollPosition.y > position.height - SCROLL_OFF_SET)
+        
+        GUILayout.BeginVertical();
+        Event e = Event.current;
+        if (e.type == EventType.ScrollWheel && e.delta.y > 0)
         {
-            scrollPosition.y = SCROLL_OFF_SET;
-            oldScrollPosition = scrollPosition; // update it to follow so no update on this frame
-        }
-        else if (scrollPosition.y < SCROLL_OFF_SET)
-        {
-            scrollPosition.y = position.height - SCROLL_OFF_SET;
-            oldScrollPosition = scrollPosition; // update it to follow so no update on this frame
-        }
-
-        // there is a value changed
-        if (oldScrollPosition != scrollPosition)
-        {
-            //Debug.LogFormat("Old = {0}, New = {1}", oldScrollPosition, scrollPosition);
-            if (oldScrollPosition.y < scrollPosition.y)
+            //Debug.Log("Scrolling down");
+            // scroll down
+            // do 5 times, remove first and add the new element to the last pos of the list
+            for (int i = 0; i < UPDATE_STEP; i++)
             {
-                // scroll down
-                // do 5 times, remove first and add the new element to the last pos of the list
-                for (int i = 0; i < UPDATE_STEP; i++)
-                {
-                    cacheData.RemoveFirst();
-                    cacheData.AddLast(new Tuple<int, bool>(counter, container.Value));
-                    MoveForward();
-                }
-            }
-            else
-            {
-                // scroll up, remove last and add the new element to the first pos of the list
-                for (int i = 0; i < UPDATE_STEP; i++)
-                {
-                    cacheData.RemoveLast();
-                    cacheData.AddFirst(new Tuple<int, bool>(counter, container.Value));
-                    MoveBackward();
-                }
+                cacheData.RemoveFirst();
+                cacheData.AddLast(new Tuple<int, bool>(counter, container.Value));
+                MoveForward();
             }
         }
-
+        else if (e.type == EventType.ScrollWheel && e.delta.y < 0)
+        {
+            //Debug.Log("Scrolling up");
+            // scroll up, remove last and add the new element to the first pos of the list
+            for (int i = 0; i < UPDATE_STEP; i++)
+            {
+                cacheData.RemoveLast();
+                cacheData.AddFirst(new Tuple<int, bool>(counter, container.Value));
+                MoveBackward();
+            }
+        }
         GUILayout.Space(10);
 
         // draw data
@@ -177,7 +164,6 @@ public class ContainerEditor : EditorWindow
             GUILayout.Toggle(data.Item2, data.Item1.ToString());
         }
 
-        oldScrollPosition = scrollPosition; // update oldScrollPosition value to track scroll movement
-        GUILayout.EndScrollView();
+        GUILayout.EndVertical();
     }
 }
